@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:30 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/19 17:23:20 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/20 19:27:53 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,5 @@
 
 int	main(int argc, char **argv)
 {
-	printf("ok");
+	check_error(argc, argv);
 }

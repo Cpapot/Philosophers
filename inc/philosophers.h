@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:03 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/20 19:28:56 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/20 22:23:10 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 
 # include <unistd.h>
 # include <stdio.h>
-#include <stdlib.h>
+# include <stdlib.h>
+# include <stdlib.h>
+# include <pthread.h>
 
 # define RESET			"\x1b[0m"
 # define BLACK			"\x1b[30m"
@@ -42,9 +44,10 @@ typedef struct s_info
 	int					nb_philo_eat;
 }			t_info;
 
-/*				check_error				*/
+/*				parsing					*/
 void			print_error(char *error);
 void			check_error(int argc, char **argv);
+t_info			parsing(int argc, char **argv);
 
 /*				philo_utils				*/
 long long		ft_atoll(const char *str);

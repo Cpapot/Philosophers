@@ -7,7 +7,7 @@
 
 HEADERS 	=	philosophers.h
 
-SRCSFILE		=	philosophers.c check_error.c \
+SRCSFILE		=	philosophers.c parsing.c \
 					philo_utils.c
 
 #					Directories
@@ -41,7 +41,7 @@ AR			=	ar rc
 
 NAME		=	philo
 
-CFLAGS		=	-Wall -Wextra -Werror -g3
+CFLAGS		=	-Wall -Wextra -Werror
 
 THREADFLAGS	=	-lpthread
 
@@ -66,7 +66,7 @@ ${NAME}:	${OBJS} Makefile
 
 $(OBJSDIR)%.o: ${SRCSDIR}%.c ${HEAD}
 	@$(MKDIR) $(OBJSDIR)
-	@$(CC) ${THREADFLAGS} -c $< -o $@ -I$(HEADERSDIR)
+	@$(CC) ${CFLAGS} ${THREADFLAGS} -c $< -o $@ -I$(HEADERSDIR)
 	@$(PRINT_COMPILE)
 	@$(eval PRINT_COMPILE = @:)
 

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:03 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/20 22:23:10 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/23 00:54:33 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_info
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					nb_philo_eat;
+	int					actual_philo;
 }			t_info;
 
 /*				parsing					*/

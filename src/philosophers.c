@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:30 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/20 22:47:02 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/23 00:58:33 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,27 +14,26 @@
 
 static void	*philo_process(void *p_data)
 {
-	int	*philo_id;
-	int	tmp;
+	t_info	*info;
 
-	philo_id = (int *)p_data;
-	tmp = *philo_id;
-	printf("philo nb :%d created\n", tmp);
+	info = (t_info *)p_data;
+	printf("philo nb :%d created\n", info->actual_philo);
 	return (p_data);
 }
 
-pthread_t	*create_philo(t_info info)
+pthread_t	*create_philo(t_info *info)
 {
 	int			i;
 	pthread_t	*philo;
 
 	i = 0;
-	philo = malloc(sizeof(pthread_t) * (info.nb_of_philo));
+	philo = malloc(sizeof(pthread_t) * (info->nb_of_philo));
 	if (philo == NULL)
 		print_error("memory error\n");
-	while (i != info.nb_of_philo)
+	while (i != info->nb_of_philo)
 	{
-		pthread_create (& philo [i], NULL, philo_process, &i);
+		info->actual_philo = i;
+		pthread_create (& philo [i], NULL, philo_process, info);
 		i++;
 	}
 	return (philo);
@@ -48,7 +47,7 @@ int	main(int argc, char **argv)
 
 	check_error(argc, argv);
 	info = parsing(argc, argv);
-	philo = create_philo(info);
+	philo = create_philo(&info);
 	i = 0;
 	while (i != info.nb_of_philo)
 	{

@@ -5,6 +5,12 @@
 #				| |    | | |  __/\__ \.
 #				|_|    |_|_|\___||___/
 
+ifeq ($(shell uname -s), Linux)
+	THREADFLAGS	=	-lpthread
+else
+	THREADFLAGS	=
+endif
+
 HEADERS 	=	philosophers.h
 
 SRCSFILE		=	philosophers.c parsing.c \
@@ -43,8 +49,6 @@ NAME		=	philo
 
 CFLAGS		=	-Wall -Wextra -Werror
 
-THREADFLAGS	=	-lpthread
-
 CC			=	gcc
 
 RM			=	rm -rf
@@ -62,7 +66,7 @@ all : ${NAME}
 	@echo "\033[1;32m✅ philosophers OK\033[1;0m"
 
 ${NAME}:	${OBJS} Makefile
-	@${CC} ${OBJS} -o ${NAME}
+	@${CC} ${CFLAGS} ${OBJS} -o ${NAME}
 
 $(OBJSDIR)%.o: ${SRCSDIR}%.c ${HEAD}
 	@$(MKDIR) $(OBJSDIR)

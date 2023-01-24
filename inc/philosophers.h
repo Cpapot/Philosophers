@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:03 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/23 18:00:45 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/24 15:03:28 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ typedef struct s_info
 	int					time_to_eat;
 	int					time_to_sleep;
 	int					nb_philo_eat;
+	int					is_alive;
 	pthread_mutex_t		mutex;
 	int					*fork_tab;
 }			t_info;
@@ -51,7 +52,7 @@ typedef struct s_philo
 {
 	int					actual_philo;
 	int					eat_count;
-	int					creation_time;
+	long				creation_time;
 	struct s_info		*info;
 
 }				t_philo;
@@ -65,5 +66,8 @@ long long		ft_atoll(const char *str);
 size_t			ft_strlen(const char *str);
 void			ft_philoadd_back(t_philo **lst, t_philo *new);
 t_philo			*ft_philonew(int content, t_info *info);
+
+/*				eat_philo				*/
+void			eat_philo(t_philo *info);
 
 #endif

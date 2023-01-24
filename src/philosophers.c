@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:30 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/24 17:34:00 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/24 20:19:58 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,12 +38,13 @@ static void	*philo_process(void *p_data)
 	info = (t_philo *)p_data;
 	gettimeofday(&time, NULL);
 	info->creation_time = (long)(time.tv_usec / 1000 + time.tv_sec * 1000);
+
 	eat_philo(info);
-	usleep(info->info->time_to_sleep * 1000);\
+	usleep(info->info->time_to_sleep * 1000);
 	gettimeofday(&time, NULL);
 	tmp = (long)(time.tv_usec / 1000 + time.tv_sec * 1000)
 		- info->creation_time;
-	printf("%ld %d is sleeping\n", tmp, info->actual_philo);
+	printf(MAGENTA"%ld %d is sleeping\n", tmp, info->actual_philo);
 	return (p_data);
 }
 

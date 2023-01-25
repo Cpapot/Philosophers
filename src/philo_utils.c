@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 18:51:48 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/23 18:00:39 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/25 15:55:18 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ t_philo	*ft_philonew(int content, t_info *info)
 
 	node = malloc(sizeof(t_philo));
 	if (node == NULL)
-		return (NULL);
+		print_error("memory error\n");
 	node->actual_philo = content;
 	node->eat_count = 0;
 	node->info = info;

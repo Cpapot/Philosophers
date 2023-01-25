@@ -14,7 +14,8 @@ endif
 HEADERS 	=	philosophers.h
 
 SRCSFILE		=	philosophers.c parsing.c \
-					philo_utils.c eat_philo.c
+					philo_utils.c philo_process.c \
+					fork.c
 
 #					Directories
 

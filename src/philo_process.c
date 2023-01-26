@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:00:24 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/25 20:22:27 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/26 12:44:22 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ static void	is_dead(t_philo *info)
 	pthread_mutex_lock (& info->info->mutex);
 	tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)
 		- info->info->creation_time;
-	if (tmp - (long)info->last_eat > info->info->time_to_die)
+	if (tmp - (long)info->last_eat > info->info->time_to_die
+		&& info->info->is_alive != 0)
 	{
 		printf(BLACK"%ld %d is dead\n", tmp, info->actual_philo);
 		info->info->is_alive = 0;

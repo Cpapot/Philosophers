@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:30 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/25 16:03:39 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/27 16:38:33 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	main(int argc, char **argv)
 	info = parsing(argc, argv);
 	pthread_mutex_init(&mutex, NULL);
 	info.mutex = mutex;
+	info.is_free = 0;
 	philo = create_philo(&info);
 	i = 0;
 	while (i != info.nb_of_philo)

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:00:24 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/26 12:44:22 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/27 17:53:03 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,14 +49,33 @@ static void	is_dead(t_philo *info)
 		printf(BLACK"%ld %d is dead\n", tmp, info->actual_philo);
 		info->info->is_alive = 0;
 		free(info->info->fork_tab);
+		info->info->is_free = 1;
 	}
 	if (info->info->is_alive != 1)
 	{
+		if (info->info->is_free == 1)
+		{
+			free(info->info->fork_tab);
+			info->info->is_free = 0;
+		}
 		pthread_mutex_unlock (& info->info->mutex);
 		free(info);
 		exit(EXIT_SUCCESS);
 	}
 	pthread_mutex_unlock (& info->info->mutex);
+}
+
+void	kill_philo(t_philo *info)
+{
+	pthread_mutex_lock (& info->info->mutex);
+	if (info->info->is_free == 1)
+	{
+		free(info->info->fork_tab);
+		info->info->is_free = 0;
+	}
+	pthread_mutex_unlock (& info->info->mutex);
+	free(info);
+	exit(EXIT_SUCCESS);
 }
 
 void	*philo_process(void *p_data)
@@ -82,5 +101,6 @@ void	*philo_process(void *p_data)
 			- info->info->creation_time;
 		printf(YELLOW"%ld %d is thinking\n", tmp, info->actual_philo);
 	}
+	kill_philo(info);
 	return (p_data);
 }

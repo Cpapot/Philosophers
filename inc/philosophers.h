@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:03 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/25 16:05:13 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/27 16:32:26 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ typedef struct s_info
 	int					time_to_sleep;
 	int					nb_philo_eat;
 	int					is_alive;
+	int					is_free;
 	long				creation_time;
 	pthread_mutex_t		mutex;
 	int					*fork_tab;

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:43:50 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/23 00:54:29 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/27 15:43:41 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ t_info	parsing(int argc, char **argv)
 	t_info	info;
 
 	info.nb_of_philo = ft_atoll(argv[1]);
-	if (info.nb_of_philo > INT_MAX || info.nb_of_philo <= 1)
+	if (info.nb_of_philo > INT_MAX || info.nb_of_philo <= 0)
 		print_error("nb of philo is invalid\n");
 	info.time_to_die = ft_atoll(argv[2]);
 	if (info.time_to_die > INT_MAX || info.time_to_die <= 0)

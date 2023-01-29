@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:56:09 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/25 20:26:22 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/29 19:24:06 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,36 +31,44 @@ int	*create_fork_tab(int philo_nb)
 
 void	check_fork(t_philo *info)
 {
-		pthread_mutex_lock (& info->info->mutex);
+	pthread_mutex_lock (& info->info->mutex);
+	if (info->info->nb_of_philo != 1)
+	{
 		if (info->actual_philo == 1 && info->info->fork_tab[0] == 1
 			&& info->info->fork_tab[info->info->nb_of_philo - 1])
 		{
 			info->info->fork_tab[0] = 0;
 			info->info->fork_tab[info->info->nb_of_philo - 1] = 0;
+			info->can_eat = 1;
 		}
 		else if (info->info->fork_tab[info->actual_philo - 1] == 1
 			&& info->info->fork_tab[info->actual_philo - 2] == 1)
 		{
 			info->info->fork_tab[info->actual_philo - 1] = 0;
 			info->info->fork_tab[info->actual_philo - 2] = 0;
+			info->can_eat = 1;
 		}
-		pthread_mutex_unlock (& info->info->mutex);
+	}
+	pthread_mutex_unlock (& info->info->mutex);
 }
 
 void	reset_fork(t_philo *info)
 {
 	pthread_mutex_lock (& info->info->mutex);
-	if (info->actual_philo == 1 && info->info->fork_tab[0] == 0
-		&& info->info->fork_tab[info->info->nb_of_philo - 1] == 0)
+	if (info->info->nb_of_philo != 1)
 	{
-		info->info->fork_tab[0] = 1;
-		info->info->fork_tab[info->info->nb_of_philo - 1] = 1;
-	}
-	else if (info->info->fork_tab[info->actual_philo - 1] == 0
-		&& info->info->fork_tab[info->actual_philo - 2] == 0)
-	{
-		info->info->fork_tab[info->actual_philo - 1] = 1;
-		info->info->fork_tab[info->actual_philo - 2] = 1;
+		if (info->actual_philo == 1 && info->info->fork_tab[0] == 0
+			&& info->info->fork_tab[info->info->nb_of_philo - 1] == 0)
+		{
+			info->info->fork_tab[0] = 1;
+			info->info->fork_tab[info->info->nb_of_philo - 1] = 1;
+		}
+		else if (info->info->fork_tab[info->actual_philo - 1] == 0
+			&& info->info->fork_tab[info->actual_philo - 2] == 0)
+		{
+			info->info->fork_tab[info->actual_philo - 1] = 1;
+			info->info->fork_tab[info->actual_philo - 2] = 1;
+		}
 	}
 	pthread_mutex_unlock (& info->info->mutex);
 }

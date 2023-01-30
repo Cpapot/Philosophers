@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:00:24 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/29 20:57:28 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/01/30 23:51:23 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ static void	is_dead(t_philo *info)
 	long			tmp;
 	struct timeval	time;
 
-
 	gettimeofday(&time, NULL);
 	tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)
 		- info->info->creation_time;
@@ -48,18 +47,11 @@ static void	is_dead(t_philo *info)
 		kill_philo(info);
 }
 
-void	wait_first_odd(t_philo *info)
-{
-	if (info->eat_count == 0 && info->actual_philo % 2 == 0)
-		usleep(info->info->time_to_eat);
-}
-
 static void	eat_philo(t_philo *info)
 {
 	long			tmp;
 	struct timeval	time;
 
-	wait_first_odd(info);
 	while (info->can_eat == 0)
 	{
 		check_fork(info);
@@ -83,28 +75,39 @@ static void	eat_philo(t_philo *info)
 	reset_fork(info);
 }
 
-void	*philo_process(void *p_data)
+void	sleep_and_think(t_philo	*info)
 {
-	t_philo			*info;
 	struct timeval	time;
 	long			tmp;
 
+	is_dead(info);
+	gettimeofday(&time, NULL);
+	tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)
+		- info->info->creation_time;
+	printf(MAGENTA"%ld %d is sleeping\n", tmp, info->actual_philo);
+	usleep(info->info->time_to_sleep * 1000);
+	is_dead(info);
+	gettimeofday(&time, NULL);
+	tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)
+		- info->info->creation_time;
+	printf(YELLOW"%ld %d is thinking\n", tmp, info->actual_philo);
+	if (info->info->nb_of_philo % 2 == 1)
+		usleep((info->info->nb_philo_eat / 10) * 10);
+}
+
+void	*philo_process(void *p_data)
+{
+	t_philo			*info;
+
 	info = (t_philo *)p_data;
+	is_dead(info);
+	if (info->actual_philo % 2)
+		usleep(15000);
 	while (info->eat_count != info->info->nb_philo_eat)
 	{
 		info->can_eat = 0;
 		eat_philo(info);
-		is_dead(info);
-		gettimeofday(&time, NULL);
-		tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)
-			- info->info->creation_time;
-		printf(MAGENTA"%ld %d is sleeping\n", tmp, info->actual_philo);
-		usleep(info->info->time_to_sleep * 1000);
-		is_dead(info);
-		gettimeofday(&time, NULL);
-		tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)
-			- info->info->creation_time;
-		printf(YELLOW"%ld %d is thinking\n", tmp, info->actual_philo);
+		sleep_and_think(info);
 	}
 	kill_philo(info);
 	return (p_data);

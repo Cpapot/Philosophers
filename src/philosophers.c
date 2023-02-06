@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:30 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/06 17:21:33 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/07 00:12:26 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ pthread_t	*create_philo(t_info *info)
 	philo = malloc(sizeof(pthread_t) * (info->nb_of_philo));
 	if (philo == NULL)
 		print_error("memory error\n");
-	info->fork_tab = create_fork_tab(info->nb_of_philo);
+	info->fork_mutex = create_fork_tab(info->nb_of_philo);
 	info->is_alive = 1;
 	gettimeofday(&time, NULL);
 	info->creation_time = (long)(time.tv_usec / 1000 + time.tv_sec * 1000);
@@ -38,12 +38,9 @@ pthread_t	*create_philo(t_info *info)
 
 void	create_mutex(t_info *info)
 {
-	pthread_mutex_t		fork_mutex;
 	pthread_mutex_t		dead_mutex;
 	pthread_mutex_t		status_mutex;
 
-	pthread_mutex_init(&fork_mutex, NULL);
-	info->fork_mutex = fork_mutex;
 	pthread_mutex_init(&dead_mutex, NULL);
 	info->dead_mutex = dead_mutex;
 	pthread_mutex_init(&status_mutex, NULL);
@@ -68,6 +65,5 @@ int	main(int argc, char **argv)
 		i++;
 	}
 	pthread_mutex_destroy(&info.dead_mutex);
-	pthread_mutex_destroy(&info.fork_mutex);
 	free (philo);
 }

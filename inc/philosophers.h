@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:03 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/06 17:21:41 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/06 23:59:44 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,8 @@ typedef struct s_info
 	int					is_free;
 	long				creation_time;
 	pthread_mutex_t		dead_mutex;
-	pthread_mutex_t		fork_mutex;
+	pthread_mutex_t		*fork_mutex;
 	pthread_mutex_t		status_mutex;
-	int					*fork_tab;
 }			t_info;
 
 typedef struct s_philo
@@ -64,6 +63,8 @@ typedef struct s_philo
 	int					eat_count;
 	int					last_eat;
 	int					can_eat;
+	int					right_fork;
+	int					left_fork;
 	struct s_info		*info;
 
 }				t_philo;
@@ -79,7 +80,7 @@ void			ft_philoadd_back(t_philo **lst, t_philo *new);
 t_philo			*ft_philonew(int content, t_info *info);
 
 /*				fork					*/
-int				*create_fork_tab(int philo_nb);
+pthread_mutex_t	*create_fork_tab(int philo_nb);
 void			check_fork(t_philo *info);
 void			reset_fork(t_philo *info);
 

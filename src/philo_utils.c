@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 18:51:48 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/25 15:55:18 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/07 00:05:37 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,15 @@ t_philo	*ft_philonew(int content, t_info *info)
 	node->actual_philo = content;
 	node->eat_count = 0;
 	node->info = info;
+	if (content == 1)
+	{
+		node->left_fork = info->nb_of_philo - 1;
+		node->right_fork = 0;
+	}
+	else
+	{
+		node->left_fork = content - 2;
+		node->right_fork = content - 1;
+	}
 	return (node);
 }

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:30 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/30 23:28:51 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/06 17:21:33 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,30 @@ pthread_t	*create_philo(t_info *info)
 	return (philo);
 }
 
+void	create_mutex(t_info *info)
+{
+	pthread_mutex_t		fork_mutex;
+	pthread_mutex_t		dead_mutex;
+	pthread_mutex_t		status_mutex;
+
+	pthread_mutex_init(&fork_mutex, NULL);
+	info->fork_mutex = fork_mutex;
+	pthread_mutex_init(&dead_mutex, NULL);
+	info->dead_mutex = dead_mutex;
+	pthread_mutex_init(&status_mutex, NULL);
+	info->dead_mutex = status_mutex;
+}
+
 int	main(int argc, char **argv)
 {
 	t_info				info;
 	pthread_t			*philo;
 	int					i;
-	pthread_mutex_t		mutex;
 
 	check_error(argc, argv);
 	info = parsing(argc, argv);
-	pthread_mutex_init(&mutex, NULL);
-	info.mutex = mutex;
 	info.is_free = 0;
+	create_mutex(&info);
 	philo = create_philo(&info);
 	i = 0;
 	while (i != info.nb_of_philo)
@@ -55,6 +67,7 @@ int	main(int argc, char **argv)
 		pthread_join (philo [i], NULL);
 		i++;
 	}
-	pthread_mutex_destroy(&mutex);
+	pthread_mutex_destroy(&info.dead_mutex);
+	pthread_mutex_destroy(&info.fork_mutex);
 	free (philo);
 }

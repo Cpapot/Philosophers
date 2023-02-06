@@ -6,7 +6,7 @@
 #				|_|    |_|_|\___||___/
 
 ifeq ($(shell uname -s), Linux)
-	THREADFLAGS	=	-lpthread
+	THREADFLAGS	=	-pthread
 else
 	THREADFLAGS	=
 endif
@@ -67,11 +67,11 @@ all : ${NAME}
 	@echo "\033[1;32m✅ philosophers OK\033[1;0m"
 
 ${NAME}:	${OBJS} Makefile
-	@${CC} ${CFLAGS} ${OBJS} -o ${NAME}
+	@${CC} ${CFLAGS}  ${THREADFLAGS} ${OBJS} -o ${NAME}
 
 $(OBJSDIR)%.o: ${SRCSDIR}%.c ${HEAD}
 	@$(MKDIR) $(OBJSDIR)
-	@$(CC) ${CFLAGS} ${THREADFLAGS} -c $< -o $@ -I$(HEADERSDIR)
+	@$(CC) ${CFLAGS} -c $< -o $@ -I$(HEADERSDIR)
 	@$(PRINT_COMPILE)
 	@$(eval PRINT_COMPILE = @:)
 

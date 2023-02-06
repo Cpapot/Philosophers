@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:00:24 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/30 23:51:23 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/06 19:02:14 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,35 +14,37 @@
 
 void	kill_philo(t_philo *info)
 {
-	pthread_mutex_lock (& info->info->mutex);
+	pthread_mutex_lock (& info->info->dead_mutex);
 	if (info->info->is_free == 0)
 	{
 		free(info->info->fork_tab);
 		info->info->is_free = 0;
 	}
-	pthread_mutex_unlock (& info->info->mutex);
+	pthread_mutex_unlock (& info->info->dead_mutex);
 	free(info);
 	exit(EXIT_SUCCESS);
 }
 
 static void	is_dead(t_philo *info)
 {
-	long			tmp;
+	//long			tmp;
 	struct timeval	time;
 
 	gettimeofday(&time, NULL);
-	tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)
+	/*tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)
 		- info->info->creation_time;
+	if (tmp == 0)
+		tmp = 0;
 	if ((tmp - (long)info->last_eat > info->info->time_to_die
 			&& info->info->is_alive != 0) || info->info->nb_of_philo == 1)
 	{
-		pthread_mutex_lock (& info->info->mutex);
+		pthread_mutex_lock (& info->info->dead_mutex);
 		printf(WHITE"%ld %d is dead\n", tmp, info->actual_philo);
 		info->info->is_alive = 0;
 		free(info->info->fork_tab);
 		info->info->is_free = 1;
-		pthread_mutex_unlock (& info->info->mutex);
-	}
+		pthread_mutex_unlock (& info->info->dead_mutex);
+	}*/
 	if (info->info->is_alive != 1)
 		kill_philo(info);
 }
@@ -105,7 +107,9 @@ void	*philo_process(void *p_data)
 		usleep(15000);
 	while (info->eat_count != info->info->nb_philo_eat)
 	{
+		pthread_mutex_lock (& info->info->status_mutex);
 		info->can_eat = 0;
+		pthread_mutex_unlock (& info->info->status_mutex);
 		eat_philo(info);
 		sleep_and_think(info);
 	}

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:03 by cpapot            #+#    #+#             */
-/*   Updated: 2023/01/28 00:31:39 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/06 17:21:41 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,9 @@ typedef struct s_info
 	int					is_alive;
 	int					is_free;
 	long				creation_time;
-	pthread_mutex_t		mutex;
+	pthread_mutex_t		dead_mutex;
+	pthread_mutex_t		fork_mutex;
+	pthread_mutex_t		status_mutex;
 	int					*fork_tab;
 }			t_info;
 

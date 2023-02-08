@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:03 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/06 23:59:44 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/08 20:33:00 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@
 # define LLONG_MAX		9223372036854775807
 # define LLONG_MIN		-9223372036854775807
 
+typedef struct s_memstock
+{
+	void				*content;
+	struct s_memstock	*next;
+}						t_memlist;
+
 typedef struct s_tab
 {
 	int			*fork_tab;
@@ -50,11 +56,9 @@ typedef struct s_info
 	int					time_to_sleep;
 	int					nb_philo_eat;
 	int					is_alive;
-	int					is_free;
 	long				creation_time;
 	pthread_mutex_t		dead_mutex;
 	pthread_mutex_t		*fork_mutex;
-	pthread_mutex_t		status_mutex;
 }			t_info;
 
 typedef struct s_philo
@@ -77,14 +81,18 @@ t_info			parsing(int argc, char **argv);
 long long		ft_atoll(const char *str);
 size_t			ft_strlen(const char *str);
 void			ft_philoadd_back(t_philo **lst, t_philo *new);
-t_philo			*ft_philonew(int content, t_info *info);
+t_philo			*ft_philonew(int content, t_info *info, t_memlist **memlist);
 
 /*				fork					*/
-pthread_mutex_t	*create_fork_tab(int philo_nb);
+pthread_mutex_t	*create_fork_tab(int philo_nb, t_memlist **memlist);
 void			check_fork(t_philo *info);
 void			reset_fork(t_philo *info);
 
 /*				process					*/
 void			*philo_process(void *p_data);
+
+/*				stockmem				*/
+void			stock_free(t_memlist **stock);
+void			*stock_malloc(size_t size, t_memlist **stock);
 
 #endif

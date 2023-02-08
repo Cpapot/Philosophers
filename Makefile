@@ -15,7 +15,7 @@ HEADERS 	=	philosophers.h
 
 SRCSFILE		=	philosophers.c parsing.c \
 					philo_utils.c philo_process.c \
-					fork.c
+					fork.c stock_free.c stock_malloc.c
 
 #					Directories
 

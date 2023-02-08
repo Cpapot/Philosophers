@@ -6,18 +6,18 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:56:09 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/07 00:14:59 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/08 17:24:18 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 
-pthread_mutex_t	*create_fork_tab(int philo_nb)
+pthread_mutex_t	*create_fork_tab(int philo_nb, t_memlist **memlist)
 {
 	pthread_mutex_t	*mutex_fork;
 	int				i;
 
-	mutex_fork = malloc(sizeof(pthread_mutex_t) * (philo_nb));
+	mutex_fork = stock_malloc(sizeof(pthread_mutex_t) * (philo_nb), memlist);
 	if (mutex_fork == NULL)
 		print_error("memory error\n");
 	i = 0;

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 18:51:48 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/07 00:05:37 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/08 18:57:13 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,16 +51,17 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-t_philo	*ft_philonew(int content, t_info *info)
+t_philo	*ft_philonew(int content, t_info *info, t_memlist **memlist)
 {
 	t_philo			*node;
 
-	node = malloc(sizeof(t_philo));
+	node = stock_malloc(sizeof(t_philo), memlist);
 	if (node == NULL)
 		print_error("memory error\n");
 	node->actual_philo = content;
 	node->eat_count = 0;
 	node->info = info;
+	node->last_eat = info->creation_time;
 	if (content == 1)
 	{
 		node->left_fork = info->nb_of_philo - 1;

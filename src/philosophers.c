@@ -6,13 +6,13 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:30 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/07 00:12:26 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/08 20:32:51 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/philosophers.h"
 
-pthread_t	*create_philo(t_info *info)
+pthread_t	*create_philo(t_info *info, t_memlist **memlist)
 {
 	int				i;
 	t_philo			*tmp;
@@ -20,16 +20,16 @@ pthread_t	*create_philo(t_info *info)
 	struct timeval	time;
 
 	i = 0;
-	philo = malloc(sizeof(pthread_t) * (info->nb_of_philo));
+	philo = stock_malloc(sizeof(pthread_t) * (info->nb_of_philo), memlist);
 	if (philo == NULL)
 		print_error("memory error\n");
-	info->fork_mutex = create_fork_tab(info->nb_of_philo);
+	info->fork_mutex = create_fork_tab(info->nb_of_philo, memlist);
 	info->is_alive = 1;
 	gettimeofday(&time, NULL);
 	info->creation_time = (long)(time.tv_usec / 1000 + time.tv_sec * 1000);
 	while (i != info->nb_of_philo)
 	{
-		tmp = ft_philonew(i + 1, info);
+		tmp = ft_philonew(i + 1, info, memlist);
 		pthread_create (& philo[i], NULL, philo_process, tmp);
 		i++;
 	}
@@ -39,12 +39,9 @@ pthread_t	*create_philo(t_info *info)
 void	create_mutex(t_info *info)
 {
 	pthread_mutex_t		dead_mutex;
-	pthread_mutex_t		status_mutex;
 
 	pthread_mutex_init(&dead_mutex, NULL);
 	info->dead_mutex = dead_mutex;
-	pthread_mutex_init(&status_mutex, NULL);
-	info->dead_mutex = status_mutex;
 }
 
 int	main(int argc, char **argv)
@@ -52,12 +49,13 @@ int	main(int argc, char **argv)
 	t_info				info;
 	pthread_t			*philo;
 	int					i;
+	t_memlist			*memlist;
 
+	memlist = NULL;
 	check_error(argc, argv);
 	info = parsing(argc, argv);
-	info.is_free = 0;
 	create_mutex(&info);
-	philo = create_philo(&info);
+	philo = create_philo(&info, &memlist);
 	i = 0;
 	while (i != info.nb_of_philo)
 	{
@@ -65,5 +63,11 @@ int	main(int argc, char **argv)
 		i++;
 	}
 	pthread_mutex_destroy(&info.dead_mutex);
-	free (philo);
+	i = 0;
+	while (i != info.nb_of_philo)
+	{
+		pthread_mutex_destroy (&info.fork_mutex [i]);
+		i++;
+	}
+	stock_free (&memlist);
 }

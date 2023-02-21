@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:00:24 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/08 20:36:31 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/21 15:15:31 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,20 @@ static int	is_dead(t_philo *info)
 	return (0);
 }
 
+static void	smart_usleep(t_philo *info, int sleeptime)
+{
+	struct timeval	time;
+	long			tmp;
+
+	gettimeofday(&time, NULL);
+	tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)
+		- info->info->creation_time;
+	if (tmp - info->last_eat + sleeptime > info->info->time_to_die )
+		usleep((info->info->time_to_die - (tmp - info->last_eat)+ 1) * 1000);
+	else
+		usleep(sleeptime * 1000);
+}
+
 static int	eat_philo(t_philo *info)
 {
 	long			tmp;
@@ -51,10 +65,10 @@ static int	eat_philo(t_philo *info)
 	tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000);
 	printf(GREEN"%ld %d is eating\n", tmp - info->info->creation_time,
 		info->actual_philo);
-	usleep(info->info->time_to_eat * 1000);
-	reset_fork(info);
 	info->eat_count++;
 	info->last_eat = tmp - info->info->creation_time;
+	smart_usleep(info, info->info->time_to_eat);
+	reset_fork(info);
 	return (1);
 }
 
@@ -69,7 +83,7 @@ int	sleep_and_think(t_philo	*info)
 	tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)
 		- info->info->creation_time;
 	printf(MAGENTA"%ld %d is sleeping\n", tmp, info->actual_philo);
-	usleep(info->info->time_to_sleep * 1000);
+	smart_usleep(info ,info->info->time_to_sleep);
 	if (is_dead(info))
 		return (1);
 	gettimeofday(&time, NULL);

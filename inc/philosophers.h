@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:03 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/08 20:33:00 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/24 15:42:02 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ typedef struct s_philo
 {
 	int					actual_philo;
 	int					eat_count;
-	int					last_eat;
+	long				last_eat;
 	int					can_eat;
 	int					right_fork;
 	int					left_fork;

@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 18:51:48 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/24 15:31:51 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/25 16:45:52 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,4 +73,29 @@ t_philo	*ft_philonew(int content, t_info *info, t_memlist **memlist)
 		node->right_fork = content - 1;
 	}
 	return (node);
+}
+
+void	lock_print(t_philo *info, char *str, int philo_nb)
+{
+	struct timeval	time;
+	long			tmp;
+
+	pthread_mutex_lock (& info->info->print_mutex);
+	gettimeofday(&time, NULL);
+	tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)
+		- info->info->creation_time;
+	printf("%ld %d", tmp, philo_nb);
+	printf(" %s\n", str);
+	pthread_mutex_unlock (& info->info->print_mutex);
+}
+
+void	set_last_eat(t_philo *info)
+{
+	struct timeval	time;
+	long			tmp;
+
+	gettimeofday(&time, NULL);
+	tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)
+		- info->info->creation_time;
+	info->last_eat = tmp;
 }

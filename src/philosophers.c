@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:30 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/24 15:40:14 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/25 14:10:47 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,10 @@ pthread_t	*create_philo(t_info *info, t_memlist **memlist)
 void	create_mutex(t_info *info)
 {
 	pthread_mutex_t		dead_mutex;
+	pthread_mutex_t		print_mutex;
 
+	pthread_mutex_init(&print_mutex, NULL);
+	info->print_mutex = print_mutex;
 	pthread_mutex_init(&dead_mutex, NULL);
 	info->dead_mutex = dead_mutex;
 }

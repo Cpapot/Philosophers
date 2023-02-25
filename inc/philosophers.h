@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/19 16:21:03 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/24 15:42:02 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/25 16:49:20 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,12 @@
 # define LLONG_MAX		9223372036854775807
 # define LLONG_MIN		-9223372036854775807
 
+# define EAT			"\x1b[36mis eating\x1b[0m"
+# define THINK			"\x1b[33mis thinking\x1b[0m"
+# define SLEEP			"\x1b[35mis sleeping\x1b[0m"
+# define DEAD			"died\x1b[0m"
+# define FORK			"\x1b[32mhas taken a fork\x1b[0m"
+
 typedef struct s_memstock
 {
 	void				*content;
@@ -57,6 +63,7 @@ typedef struct s_info
 	int					nb_philo_eat;
 	int					is_alive;
 	long				creation_time;
+	pthread_mutex_t		print_mutex;
 	pthread_mutex_t		dead_mutex;
 	pthread_mutex_t		*fork_mutex;
 }			t_info;
@@ -80,8 +87,9 @@ t_info			parsing(int argc, char **argv);
 /*				philo_utils				*/
 long long		ft_atoll(const char *str);
 size_t			ft_strlen(const char *str);
-void			ft_philoadd_back(t_philo **lst, t_philo *new);
 t_philo			*ft_philonew(int content, t_info *info, t_memlist **memlist);
+void			lock_print(t_philo *info, char *str, int philo_nb);
+void			set_last_eat(t_philo *info);
 
 /*				fork					*/
 pthread_mutex_t	*create_fork_tab(int philo_nb, t_memlist **memlist);

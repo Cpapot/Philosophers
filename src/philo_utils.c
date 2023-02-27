@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 18:51:48 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/25 16:45:52 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/27 14:34:18 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,13 @@ void	lock_print(t_philo *info, char *str, int philo_nb)
 	struct timeval	time;
 	long			tmp;
 
+	pthread_mutex_lock (& info->info->dead_mutex);
+	if (info->info->is_alive == 0)
+	{
+		pthread_mutex_unlock (& info->info->dead_mutex);
+		return ;
+	}
+	pthread_mutex_unlock (& info->info->dead_mutex);
 	pthread_mutex_lock (& info->info->print_mutex);
 	gettimeofday(&time, NULL);
 	tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)

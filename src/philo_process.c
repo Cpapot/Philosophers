@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 16:00:24 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/25 17:01:44 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/27 14:43:16 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,13 @@ static int	is_dead(t_philo *info)
 	if ((tmp - (long)info->last_eat > info->info->time_to_die
 			&& info->info->is_alive != 0) || info->info->nb_of_philo == 1)
 	{
-		lock_print(info, DEAD, info->actual_philo);
 		info->info->is_alive = 0;
+		pthread_mutex_lock (& info->info->print_mutex);
+		gettimeofday(&time, NULL);
+		tmp = (long)(time.tv_usec * 0.001 + time.tv_sec * 1000)
+			- info->info->creation_time;
+		printf("%ld %d %s\n", tmp, info->actual_philo, DEAD);
+		pthread_mutex_unlock (& info->info->print_mutex);
 	}
 	if (info->info->is_alive == 0)
 	{

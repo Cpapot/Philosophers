@@ -6,7 +6,7 @@
 /*   By: cpapot <cpapot@student.42lyon.fr >         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/25 15:56:09 by cpapot            #+#    #+#             */
-/*   Updated: 2023/02/25 17:03:38 by cpapot           ###   ########.fr       */
+/*   Updated: 2023/02/27 14:43:30 by cpapot           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,7 @@ void	check_fork(t_philo *info)
 {
 	if (info->info->nb_of_philo != 1)
 	{
-		pthread_mutex_lock (& info->info->dead_mutex);
-		if (info->info->is_alive == 0)
-		{
-			pthread_mutex_unlock (& info->info->dead_mutex);
-			exit (1);
-		}
-		pthread_mutex_unlock (& info->info->dead_mutex);
 		pthread_mutex_lock (& info->info->fork_mutex[info->right_fork]);
-		pthread_mutex_lock (& info->info->dead_mutex);
-		if (info->info->is_alive == 0)
-		{
-			pthread_mutex_unlock (& info->info->dead_mutex);
-			pthread_mutex_unlock (& info->info->fork_mutex[info->right_fork]);
-			exit (1);
-		}
-		pthread_mutex_unlock (& info->info->dead_mutex);
 		pthread_mutex_lock (& info->info->fork_mutex[info->left_fork]);
 	}
 }
